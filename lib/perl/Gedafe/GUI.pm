@@ -252,7 +252,7 @@ sub GUI_Header($$)
 #	my $fields = $g{db_fields}{$args->{TABLE}};
 
         # get rid of warning message
-	if (defined $g{db_virtual_fields_list}{$args->{TABLE}}) {
+	if (defined $g{db_virtual_fields_list}) {
  	    if (ref $g{db_virtual_fields_list}{$args->{TABLE}} eq 'ARRAY' and @{$g{db_virtual_fields_list}{$args->{TABLE}}}){
 	  	    $args->{HEAD_SCRIPT} =
 		        Template({PAGE => 'mncombo', ELEMENT=>'mncombo_javascript'});
@@ -1870,7 +1870,7 @@ sub GUI_Pearl($)
 	print Template(\%template_args);
 
 	my $field;
-	my $n;
+	my $n=0;
 	for (@{$g{pearls}{$pearl}->template()}){
 		my ($field,$label,$widget,$value,$test) = @$_;
 		my $inputelem = GUI_WidgetWrite($s,"field_$field",$widget,$value);
