@@ -581,6 +581,15 @@ sub DB_Widget($$)
 	elsif($f->{type} eq 'cidr') {
 		return 'text(size=20)';
 	}
+	elsif($f->{type} eq 'oid') {
+		return 'text(size=20)';
+	}
+	elsif($f->{type} eq 'inet') {
+		return 'text(size=20)';
+	}
+	elsif($f->{type} eq 'jsonb') {
+		return 'text';
+	}
 	elsif($f->{type} eq 'bytea') {
 		return 'file';
 	}
@@ -778,7 +787,8 @@ END
 
 	# defaults
 	$query = <<'END';
-SELECT d.adsrc FROM pg_attrdef d, pg_class c WHERE
+-- SELECT d.adsrc FROM pg_attrdef d, pg_class c WHERE
+SELECT pg_get_expr(d.adbin,d.adrelid) FROM pg_attrdef d, pg_class c WHERE
 c.relname = ? AND c.oid = d.adrelid AND d.adnum = ?;
 END
 	$sth = $dbh->prepare($query) or die $dbh->errstr;
