@@ -9,6 +9,7 @@ use strict;
 
 use Gedafe::Global qw(%g);
 use Text::CPPTemplate;
+use File::Basename;
 
 use IO::Socket;
 
@@ -94,8 +95,14 @@ sub Die($) {
 sub ConnectToTicketsDaemon($) {
 	my $s = shift;
 	my $file = $g{conf}{tickets_socket};
-	my $socket = IO::Socket::UNIX->new(Peer => $file)
-		or Die("Couldn't connect to gedafed daemon: $!");
+	my $socket;
+	$socket = IO::Socket::UNIX->new(Peer => $file) or do {
+	    my $path = dirname(__FILE__);
+	    my $daemon = "$path/../../../bin/gedafed";
+	    system "( $daemon & )";
+	    sleep 1;
+	    $socket = IO::Socket::UNIX->new(Peer => $file) or die "Failed to create gedafed instance: $!";
+	};
 	return $socket;
 }
 
