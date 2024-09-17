@@ -1,0 +1,3 @@
+v1.4.3: 2024-09-17, fritz.zaucker@oetiker.ch
+  - checkin various changes not previously committed
+  - add CHANGES, VERSION, .gitignore files
